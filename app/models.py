@@ -24,3 +24,7 @@ class TaskCard(BaseDocument):
     task_type = fl.StringField(max_length=100, choices=['Reminder', 'Call', 'Event'])
     task_status = fl.StringField(max_length=100, choices=['Active', 'Completed', 'Ended'])
     task_body = fl.StringField(max_length=100)
+
+    
+class Deal(BaseDocument):
+    date
