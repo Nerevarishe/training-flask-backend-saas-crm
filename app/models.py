@@ -15,7 +15,8 @@ class BaseDocument(Document):
     
 class User(BaseDocument):
     username = fl.StringField(max_length=30)
-    email = fl.EmailField
+    email = fl.EmailField()
+    avatar = fl.URLField()
     
     
 class TaskCard(BaseDocument):
