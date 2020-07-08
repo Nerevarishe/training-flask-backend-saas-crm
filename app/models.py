@@ -20,11 +20,11 @@ class User(BaseDocument):
     
     
 class TaskCard(BaseDocument):
-    task_gtdue_date = fl.DateTimeField(default=datetime.utcnow)
+    task_due_date = fl.DateField(default=datetime.utcnow)
     task_type = fl.StringField(max_length=100, choices=['Reminder', 'Call', 'Event'])
     task_status = fl.StringField(max_length=100, choices=['Active', 'Completed', 'Ended'])
-    task_body = fl.StringField(max_length=100)
+    task_body = fl.StringField()
 
     
 class Deal(BaseDocument):
-    date
+    deal_date = fl.DateTimeField(default=datetime.utcnow)

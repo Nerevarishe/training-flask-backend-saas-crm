@@ -13,5 +13,7 @@ def create_app(config_class=Config):
     CORS(app)
 
     # Blueprints
+    from app.api.v1.tasks import bp as tasks_bp
+    app.register_blueprint(tasks_bp, url_prefix='/api/v1/tasks')
 
     return app
