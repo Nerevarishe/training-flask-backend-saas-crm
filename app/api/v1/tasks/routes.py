@@ -1,7 +1,16 @@
 from flask import request
 from app.api.v1.tasks import bp
 from app.models import TaskCard
-from datetime import datetime
+from datetime import datetime, timedelta
+
+PREV_MONTH = "prevMonth"
+THIS_MONTH = "thisMonth"
+NEXT_MONTH = "nextMonth"
+
+
+def last_day_of_month(any_day):
+    next_month = any_day.replace(day=28) + timedelta(days=4)  # this will never fail
+    return next_month - timedelta(days=next_month.day)
 
 
 def convert_to_date(data: str) -> datetime:
@@ -35,16 +44,37 @@ def get_tasks_stat():
     Get tasks statistic in defined period
     """
 
-    tasks = TaskCard.objects
+    period = request.args.get("period", default=THIS_MONTH, type=str)
+    tasks = None
+    current_date = datetime.now()
+    last_day_of_current_month = last_day_of_month(current_date)
+
+    if period == PREV_MONTH:
+        prev_month_date = last_day_of_current_month - timedelta(days=last_day_of_current_month.day)
+        last_day_of_prev_month = last_day_of_month(prev_month_date)
+        tasks = TaskCard.objects(task_due_date__gte=prev_month_date.replace(day=1),
+                                 task_due_date__lte=last_day_of_prev_month)
+
+    if period == THIS_MONTH:
+        tasks = TaskCard.objects(task_due_date__gte=datetime.now().replace(day=1),
+                                 task_due_date__lte=datetime.now().replace(day=last_day_of_month(current_date).day))
+
+    if period == NEXT_MONTH:
+        next_month_date = last_day_of_current_month + timedelta(days=last_day_of_current_month.day)
+        last_day_of_next_month = last_day_of_month(next_month_date)
+        tasks = TaskCard.objects(task_due_date__gte=next_month_date.replace(day=1),
+                                 task_due_date__lte=last_day_of_next_month)
+
     all_tasks = tasks.count()
     active_tasks = tasks.filter(task_status='Active').count()
     completed_tasks = tasks.filter(task_status='Completed').count()
     ended_tasks = tasks.filter(task_status='Ended').count()
+
     return {
         "tasks_stat": {
-            "active_tasks": int((active_tasks / all_tasks) * 100),
-            "completed_tasks": int((completed_tasks / all_tasks) * 100),
-            "ended_tasks": int((ended_tasks / all_tasks) * 100)
+            "active_tasks": (active_tasks / all_tasks) * 100,
+            "completed_tasks": (completed_tasks / all_tasks) * 100,
+            "ended_tasks": (ended_tasks / all_tasks) * 100
         }
     }
 

@@ -21,8 +21,9 @@ class User(BaseDocument):
     
 class TaskCard(BaseDocument):
     task_due_date = fl.DateField(default=datetime.utcnow)
-    task_type = fl.StringField(max_length=100, choices=['Reminder', 'Call', 'Event'])
-    task_status = fl.StringField(max_length=100, choices=['Active', 'Completed', 'Ended'])
+    task_type = fl.StringField(max_length=10, choices=['Reminder', 'Call', 'Event'])
+    task_status = fl.StringField(max_length=10, choices=['Active', 'Completed', 'Ended'])
+    # TODO: set max_length
     task_body = fl.StringField()
 
     
