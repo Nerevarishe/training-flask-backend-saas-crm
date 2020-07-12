@@ -34,6 +34,14 @@ def filter_period(period, per_page=3):
                                 task_due_date__lte=last_day_of_this_week) \
             .order_by('-task_due_date').paginate(page=1, per_page=per_page)
 
+    if period == NEXT_WEEK:
+        next_week_date = current_date + timedelta(days=7)
+        first_day_of_next_week = next_week_date - timedelta(days=current_date.isoweekday() % 7)
+        last_day_of_next_week = first_day_of_next_week + timedelta(days=6)
+        return TaskCard.objects(task_due_date__gte=first_day_of_next_week,
+                                task_due_date__lte=last_day_of_next_week) \
+            .order_by('-task_due_date').paginate(page=1, per_page=per_page)
+
     # Filter for TaskStatWidget
     if period == PREV_MONTH:
         last_day_of_current_month = last_day_of_month(current_date)
