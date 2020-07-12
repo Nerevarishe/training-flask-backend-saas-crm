@@ -13,6 +13,10 @@ def create_app(config_class=Config):
     CORS(app)
 
     # Blueprints
+    # Tasks with user data
+    from app.api.v1.add_complex_data import bp as complex_bp
+    app.register_blueprint(complex_bp, url_prefix='/api/v1/add_complex_data')
+
     # Tasks
     from app.api.v1.tasks import bp as tasks_bp
     app.register_blueprint(tasks_bp, url_prefix='/api/v1/tasks')

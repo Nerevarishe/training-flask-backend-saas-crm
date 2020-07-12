@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask_mongoengine import Document
-from mongoengine import fields as fl
+from mongoengine import fields as fl, DENY
 
 
 class BaseDocument(Document):
@@ -25,6 +25,7 @@ class TaskCard(BaseDocument):
     task_status = fl.StringField(max_length=10, choices=['Active', 'Completed', 'Ended'])
     # TODO: set max_length
     task_body = fl.StringField()
+    assigned_by_user = fl.ReferenceField(User, reverse_delete_rule=DENY)
 
     
 class Deal(BaseDocument):

@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, jsonify
 from app.api.v1.tasks import bp
 from app.models import TaskCard
 from datetime import datetime, timedelta
@@ -33,9 +33,9 @@ def get_widget_data():
     # Get paginated tasks:
     tasks = TaskCard.objects.order_by('-task_due_date').paginate(page=1, per_page=per_page)
     for task in tasks.items:
-        _tasks.append(task)
+        _tasks.append({"task": task, "user": task.assigned_by_user})
 
-    return {"tasks": _tasks}
+    return jsonify(_tasks)
 
 
 @bp.route('/tasks_stat')
