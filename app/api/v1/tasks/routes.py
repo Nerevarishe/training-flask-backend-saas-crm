@@ -41,7 +41,7 @@ def get_widget_data():
             _week_days.append({'week_day_name': day, 'week_day_date': (first_day_of_week + timedelta(days=i)).day})
             i += 1
 
-    return jsonify({'task_cards': _tasks, 'week_days': _week_days})
+    return jsonify({'task_cards': _tasks, 'week_days': _week_days, 'has_next': tasks.has_next})
 
 
 @bp.route('/tasks_stat')
