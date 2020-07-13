@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from app.api.v1.tasks import bp
 from app.models import TaskCard
-from datetime import datetime
+from datetime import datetime, timedelta
 from .utils import filter_period, THIS_MONTH, THIS_WEEK
 
 
@@ -11,6 +11,9 @@ def convert_to_date(data: str) -> datetime:
     """
 
     return datetime.strptime(data, '%d/%m/%Y')
+
+
+week_days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
 
 @bp.route('/', methods=['GET'])
@@ -24,11 +27,21 @@ def get_widget_data():
 
     _tasks = []
     # Get paginated tasks:
-    tasks = filter_period(period, per_page)
+    tasks, first_day_of_week = filter_period(period, per_page)
+    print(first_day_of_week)
     for task in tasks.items:
         _tasks.append({"task": task, "user": task.assigned_by_user})
 
-    return jsonify(_tasks)
+    _week_days = []
+    i = 1
+    for day in week_days:
+        if day == 'Sun':
+            _week_days.append({'week_day_name': day, 'week_day_date': first_day_of_week.day})
+        else:
+            _week_days.append({'week_day_name': day, 'week_day_date': (first_day_of_week + timedelta(days=i)).day})
+            i += 1
+
+    return jsonify({'task_cards': _tasks, 'week_days': _week_days})
 
 
 @bp.route('/tasks_stat')
