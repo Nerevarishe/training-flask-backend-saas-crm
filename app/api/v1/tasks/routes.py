@@ -22,13 +22,13 @@ def get_widget_data():
     Get data for tasks widget
     """
 
-    per_page = request.args.get('per_page', default=3, type=int)
     period = request.args.get('period', default=THIS_WEEK, type=str)
+    date = request.args.get('date', default=None, type=int)
+    per_page = request.args.get('per_page', default=3, type=int)
 
     _tasks = []
     # Get paginated tasks:
-    tasks, first_day_of_week = filter_period(period, per_page)
-    print(first_day_of_week)
+    tasks, first_day_of_week = filter_period(period, date, per_page)
     for task in tasks.items:
         _tasks.append({"task": task, "user": task.assigned_by_user})
 

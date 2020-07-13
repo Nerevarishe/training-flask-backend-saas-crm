@@ -15,32 +15,44 @@ def last_day_of_month(any_day):
     return next_month - timedelta(days=next_month.day)
 
 
-def filter_period(period, per_page=3):
+def filter_period(period, date=None, per_page=3):
     current_date = datetime.now()
 
     # Filter for TasksWidget
     if period == PREV_WEEK:
         prev_week_date = current_date - timedelta(days=7)
         first_day_of_prev_week = prev_week_date - timedelta(days=prev_week_date.isoweekday() % 7)
+        first_day = first_day_of_prev_week
         last_day_of_prev_week = first_day_of_prev_week + timedelta(days=6)
+        if date:
+            first_day_of_prev_week = first_day_of_prev_week.replace(day=date)
+            last_day_of_prev_week = last_day_of_prev_week.replace(day=date)
         return TaskCard.objects(task_due_date__gte=first_day_of_prev_week,
                                 task_due_date__lte=last_day_of_prev_week) \
-            .order_by('-task_due_date').paginate(page=1, per_page=per_page), first_day_of_prev_week
+                   .order_by('-task_due_date').paginate(page=1, per_page=per_page), first_day
 
     if period == THIS_WEEK:
         first_day_of_this_week = current_date - timedelta(days=current_date.isoweekday() % 7)
+        first_day = first_day_of_this_week
         last_day_of_this_week = first_day_of_this_week + timedelta(days=6)
+        if date:
+            first_day_of_this_week = first_day_of_this_week.replace(day=date)
+            last_day_of_this_week = last_day_of_this_week.replace(day=date)
         return TaskCard.objects(task_due_date__gte=first_day_of_this_week,
                                 task_due_date__lte=last_day_of_this_week) \
-            .order_by('-task_due_date').paginate(page=1, per_page=per_page), first_day_of_this_week
+                   .order_by('-task_due_date').paginate(page=1, per_page=per_page), first_day
 
     if period == NEXT_WEEK:
         next_week_date = current_date + timedelta(days=7)
         first_day_of_next_week = next_week_date - timedelta(days=current_date.isoweekday() % 7)
+        first_day = first_day_of_next_week
         last_day_of_next_week = first_day_of_next_week + timedelta(days=6)
+        if date:
+            first_day_of_next_week = first_day_of_next_week.replace(day=date)
+            last_day_of_next_week = last_day_of_next_week.replace(day=date)
         return TaskCard.objects(task_due_date__gte=first_day_of_next_week,
                                 task_due_date__lte=last_day_of_next_week) \
-            .order_by('-task_due_date').paginate(page=1, per_page=per_page), first_day_of_next_week
+                   .order_by('-task_due_date').paginate(page=1, per_page=per_page), first_day
 
     # Filter for TaskStatWidget
     if period == PREV_MONTH:
