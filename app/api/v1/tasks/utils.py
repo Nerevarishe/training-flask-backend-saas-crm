@@ -27,9 +27,12 @@ def filter_period(period, date=None, per_page=3):
         if date:
             first_day_of_prev_week = first_day_of_prev_week.replace(day=date)
             last_day_of_prev_week = last_day_of_prev_week.replace(day=date)
-        return TaskCard.objects(task_due_date__gte=first_day_of_prev_week,
-                                task_due_date__lte=last_day_of_prev_week) \
-                   .order_by('-task_due_date').paginate(page=1, per_page=per_page), first_day
+        tasks = TaskCard.objects(task_due_date__gte=first_day_of_prev_week, task_due_date__lte=last_day_of_prev_week)
+        all_tasks = tasks.count()
+        completed_tasks = tasks.filter(task_status='Completed').count()
+
+        return tasks.order_by('-task_due_date').paginate(page=1,
+                                                         per_page=per_page), first_day, all_tasks, completed_tasks
 
     if period == THIS_WEEK:
         first_day_of_this_week = current_date - timedelta(days=current_date.isoweekday() % 7)
@@ -38,9 +41,11 @@ def filter_period(period, date=None, per_page=3):
         if date:
             first_day_of_this_week = first_day_of_this_week.replace(day=date)
             last_day_of_this_week = last_day_of_this_week.replace(day=date)
-        return TaskCard.objects(task_due_date__gte=first_day_of_this_week,
-                                task_due_date__lte=last_day_of_this_week) \
-                   .order_by('-task_due_date').paginate(page=1, per_page=per_page), first_day
+        tasks = TaskCard.objects(task_due_date__gte=first_day_of_this_week, task_due_date__lte=last_day_of_this_week)
+        all_tasks = tasks.count()
+        completed_tasks = tasks.filter(task_status='Completed').count()
+        return tasks.order_by('-task_due_date').paginate(page=1,
+                                                         per_page=per_page), first_day, all_tasks, completed_tasks
 
     if period == NEXT_WEEK:
         next_week_date = current_date + timedelta(days=7)
@@ -50,9 +55,11 @@ def filter_period(period, date=None, per_page=3):
         if date:
             first_day_of_next_week = first_day_of_next_week.replace(day=date)
             last_day_of_next_week = last_day_of_next_week.replace(day=date)
-        return TaskCard.objects(task_due_date__gte=first_day_of_next_week,
-                                task_due_date__lte=last_day_of_next_week) \
-                   .order_by('-task_due_date').paginate(page=1, per_page=per_page), first_day
+        tasks = TaskCard.objects(task_due_date__gte=first_day_of_next_week, task_due_date__lte=last_day_of_next_week)
+        all_tasks = tasks.count()
+        completed_tasks = tasks.filter(task_status='Completed').count()
+        return tasks.order_by('-task_due_date').paginate(page=1,
+                                                         per_page=per_page), first_day, all_tasks, completed_tasks
 
     # Filter for TaskStatWidget
     if period == PREV_MONTH:

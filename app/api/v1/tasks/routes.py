@@ -28,7 +28,8 @@ def get_widget_data():
 
     _tasks = []
     # Get paginated tasks:
-    tasks, first_day_of_week = filter_period(period, date, per_page)
+    tasks, first_day_of_week, all_tasks, completed_tasks = filter_period(period, date, per_page)
+
     for task in tasks.items:
         _tasks.append({"task": task, "user": task.assigned_by_user})
 
@@ -41,7 +42,9 @@ def get_widget_data():
             _week_days.append({'week_day_name': day, 'week_day_date': (first_day_of_week + timedelta(days=i)).day})
             i += 1
 
-    return jsonify({'task_cards': _tasks, 'week_days': _week_days, 'has_next': tasks.has_next})
+    return jsonify(
+        {'task_cards': _tasks, 'week_days': _week_days, 'has_next': tasks.has_next, "tasks_in_period": all_tasks,
+         'completed_tasks': completed_tasks})
 
 
 @bp.route('/tasks_stat')
