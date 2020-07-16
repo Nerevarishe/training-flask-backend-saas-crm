@@ -1,5 +1,5 @@
 from flask import request
-from app.api.v1.users import bp
+from . import bp
 from app.models import User
 
 

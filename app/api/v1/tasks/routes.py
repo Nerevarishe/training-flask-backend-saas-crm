@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from app.api.v1.tasks import bp
+from . import bp
 from app.models import TaskCard
 from datetime import datetime, timedelta
 from .utils import filter_period, THIS_MONTH, THIS_WEEK

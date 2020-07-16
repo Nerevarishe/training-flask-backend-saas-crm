@@ -1,4 +1,3 @@
-from flask import request
 from . import bp
 from app.models import User, TaskCard
 from random import choice
