@@ -47,12 +47,6 @@ def get_widget_data():
          'completed_tasks': completed_tasks})
 
 
-@bp.route('/<task_id>', methods=['GET'])
-def get_task_card_data(task_id):
-    task = TaskCard.objects(id=task_id).get_or_404()
-    return jsonify(task)
-
-
 @bp.route('/<task_id>', methods=['PUT'])
 def update_task(task_id):
     to_status = request.args.get('change_status_to', default=None, type=str)
