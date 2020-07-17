@@ -25,4 +25,8 @@ def create_app(config_class=Config):
     from app.api.v1.users import bp as users_bp
     app.register_blueprint(users_bp, url_prefix='/api/v1/users')
 
+    # Deals
+    from app.api.v1.deals import bp as deals_bp
+    app.register_blueprint(deals_bp, url_prefix='/api/v1/deals')
+
     return app

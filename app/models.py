@@ -29,4 +29,7 @@ class TaskCard(BaseDocument):
 
     
 class Deal(BaseDocument):
-    deal_date = fl.DateTimeField(default=datetime.utcnow)
+    deal_date = fl.DateField()
+    amount = fl.IntField()
+    client = fl.StringField()
+
