@@ -1,5 +1,6 @@
 from flask import request, jsonify
 from . import bp
+from .utils import filter_period
 from app.models import Deal
 from datetime import datetime
 
@@ -20,7 +21,10 @@ def get_all_deals():
 
 @bp.route('/chart_data', methods=['GET'])
 def get_chart_data():
-    deals = Deal.objects.aggregate({
+    period = request.args.get('period', default='monthly', type=str)
+    # deals = Deal.objects.aggregate({
+    deals = filter_period(period)
+    deals = deals.aggregate({
         # Sort by deal date ASC
         '$sort': {
             'deal_date': 1
@@ -30,10 +34,6 @@ def get_chart_data():
         {
             '$group': {
                 '_id': {
-                    # Divide by 1000
-                    # '$divide': [
-                    #     {'$toLong': '$deal_date'}, 1000
-                    # ]
                     '$toLong': '$deal_date'
                 },
                 'count': {

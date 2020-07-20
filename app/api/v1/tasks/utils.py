@@ -1,4 +1,5 @@
 from app.models import TaskCard
+from app.utils import last_day_of_month
 from datetime import datetime, timedelta
 
 PREV_WEEK = "prevWeek"
@@ -8,11 +9,6 @@ NEXT_WEEK = "nextWeek"
 PREV_MONTH = "prevMonth"
 THIS_MONTH = "thisMonth"
 NEXT_MONTH = "nextMonth"
-
-
-def last_day_of_month(any_day):
-    next_month = any_day.replace(day=28) + timedelta(days=4)  # this will never fail
-    return next_month - timedelta(days=next_month.day)
 
 
 def filter_period(period, date=None, per_page=3):
