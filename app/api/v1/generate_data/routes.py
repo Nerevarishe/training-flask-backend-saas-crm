@@ -8,6 +8,7 @@ from random import choice
 
 @bp.route('/', methods=['GET'])
 def generate_all_data():
+    # TODO: Add check if data already generated!
     fake = Faker()
     # 1. Generate 100 new users and save them to DB and in array
     user_array = []
@@ -34,6 +35,14 @@ def generate_all_data():
         task.save()
 
     # 3. Generate 10000 new deals in period: start date - first day of the year, end date - current date
+    for _ in range(10000):
+        new_deal = Deal()
+        new_deal.deal_date = fake.date_between(start_date=current_date.replace(day=1, month=1),
+                                               end_date=current_date.replace(day=31, month=12))
+        new_deal.amount = fake.random_int(min=300, max=10000)
+        new_deal.client = fake.company()
+        new_deal.save()
+
     return {
         'msg': 'OK'
     }
