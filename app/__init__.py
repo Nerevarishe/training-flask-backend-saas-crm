@@ -13,13 +13,9 @@ def create_app(config_class=Config):
     CORS(app)
 
     # Blueprints
-
+    # Fake data generator
     from app.api.v1.generate_data import bp as generate_data_bp
     app.register_blueprint(generate_data_bp, url_prefix='/api/v1/generate_data')
-
-    # Tasks with user data
-    from app.api.v1.add_complex_data import bp as complex_bp
-    app.register_blueprint(complex_bp, url_prefix='/api/v1/add_complex_data')
 
     # Tasks
     from app.api.v1.tasks import bp as tasks_bp
