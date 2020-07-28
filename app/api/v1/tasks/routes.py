@@ -1,17 +1,8 @@
 from flask import request, jsonify
 from . import bp
 from app.models import TaskCard
-from datetime import datetime, timedelta
+from datetime import timedelta
 from .utils import filter_period, THIS_MONTH, THIS_WEEK
-
-
-def convert_to_date(data: str) -> datetime:
-    """
-    Convert dd/mm/yyyy to datetime object
-    """
-
-    return datetime.strptime(data, '%d/%m/%Y')
-
 
 week_days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 

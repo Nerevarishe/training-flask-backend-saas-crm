@@ -9,3 +9,11 @@ def last_day_of_month(any_day: datetime):
 def current_quarter(date: datetime):
     current_month = date.month
     return (current_month - 1) // 3 + 1
+
+
+def convert_to_date(data: str) -> datetime:
+    """
+    Convert dd/mm/yyyy to datetime object
+    """
+
+    return datetime.strptime(data, '%d/%m/%Y')

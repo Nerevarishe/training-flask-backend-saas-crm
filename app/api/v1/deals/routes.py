@@ -1,15 +1,6 @@
 from flask import request, jsonify
 from . import bp
 from .utils import filter_period
-from datetime import datetime
-
-
-def convert_to_date(data: str) -> datetime:
-    """
-    Convert dd/mm/yyyy to datetime object
-    """
-
-    return datetime.strptime(data, '%d/%m/%Y')
 
 
 @bp.route('/chart_data', methods=['GET'])
