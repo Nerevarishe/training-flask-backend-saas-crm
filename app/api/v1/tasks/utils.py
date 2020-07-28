@@ -12,7 +12,7 @@ NEXT_MONTH = "nextMonth"
 
 
 def filter_period(period, date=None, per_page=3):
-    current_date = datetime.now()
+    current_date = datetime.utcnow()
 
     # Filter for TasksWidget
     if period == PREV_WEEK:
@@ -30,20 +30,22 @@ def filter_period(period, date=None, per_page=3):
         return tasks.order_by('-task_due_date').paginate(page=1,
                                                          per_page=per_page), first_day, all_tasks, completed_tasks
 
-    if period == THIS_WEEK:
+    elif period == THIS_WEEK:
         first_day_of_this_week = current_date - timedelta(days=current_date.isoweekday() % 7)
         first_day = first_day_of_this_week
         last_day_of_this_week = first_day_of_this_week + timedelta(days=6)
         if date:
-            first_day_of_this_week = first_day_of_this_week.replace(day=date)
-            last_day_of_this_week = last_day_of_this_week.replace(day=date)
+            # first_day_of_this_week = first_day_of_this_week.replace(day=date)
+            # last_day_of_this_week = last_day_of_this_week.replace(day=date)
+            first_day_of_this_week = first_day_of_this_week.replace(day=date, month=current_date.month)
+            last_day_of_this_week = last_day_of_this_week.replace(day=date, month=current_date.month)
         tasks = TaskCard.objects(task_due_date__gte=first_day_of_this_week, task_due_date__lte=last_day_of_this_week)
         all_tasks = tasks.count()
         completed_tasks = tasks.filter(task_status='Completed').count()
         return tasks.order_by('-task_due_date').paginate(page=1,
                                                          per_page=per_page), first_day, all_tasks, completed_tasks
 
-    if period == NEXT_WEEK:
+    elif period == NEXT_WEEK:
         next_week_date = current_date + timedelta(days=7)
         first_day_of_next_week = next_week_date - timedelta(days=current_date.isoweekday() % 7)
         first_day = first_day_of_next_week
