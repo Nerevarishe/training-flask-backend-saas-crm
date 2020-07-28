@@ -1,4 +1,3 @@
-from flask import request
 from . import bp
 from app.models import User, Deal, TaskCard
 from faker import Faker
@@ -20,7 +19,7 @@ def generate_all_data():
         user.avatar = 'https://api.adorable.io/avatars/150/' + fake_profile['mail']
         user_array.append(user)
         user.save()
-    # 2. Generate 100 new tasks and set users from random array. Dates must be prev, current and next month
+    # 2. Generate 500 new tasks and set users from random array. Dates must be prev, current and next month
     current_date = datetime.utcnow()
     for _ in range(500):
         task = TaskCard()

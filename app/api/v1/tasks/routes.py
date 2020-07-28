@@ -18,10 +18,6 @@ week_days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
 @bp.route('/', methods=['GET'])
 def get_widget_data():
-    """
-    Get data for tasks widget
-    """
-
     period = request.args.get('period', default=THIS_WEEK, type=str)
     date = request.args.get('date', default=None, type=int)
     per_page = request.args.get('per_page', default=3, type=int)
@@ -67,10 +63,6 @@ def delete_task(task_id):
 
 @bp.route('/tasks_stat')
 def get_tasks_stat():
-    """
-    Get tasks statistic in defined period
-    """
-
     period = request.args.get("period", default=THIS_MONTH, type=str)
     tasks = filter_period(period)
 
@@ -86,22 +78,3 @@ def get_tasks_stat():
             "ended_tasks": round((ended_tasks / all_tasks) * 100)
         }
     }
-
-
-@bp.route('/add_in_bulk', methods=['POST'])
-def add_in_bulk():
-    """
-    Add data in bulk to db
-    """
-
-    tasks = request.get_json()
-
-    for task in tasks:
-        new_task = TaskCard()
-        new_task.task_due_date = convert_to_date(task["task_due_date"])
-        new_task.task_type = task["task_type"]
-        new_task.task_status = task["task_status"]
-        new_task.task_body = task["task_body"]
-        new_task.save()
-
-    return {"msg": "OK"}

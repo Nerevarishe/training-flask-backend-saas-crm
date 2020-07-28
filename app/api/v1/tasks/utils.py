@@ -35,8 +35,6 @@ def filter_period(period, date=None, per_page=3):
         first_day = first_day_of_this_week
         last_day_of_this_week = first_day_of_this_week + timedelta(days=6)
         if date:
-            # first_day_of_this_week = first_day_of_this_week.replace(day=date)
-            # last_day_of_this_week = last_day_of_this_week.replace(day=date)
             first_day_of_this_week = first_day_of_this_week.replace(day=date, month=current_date.month)
             last_day_of_this_week = last_day_of_this_week.replace(day=date, month=current_date.month)
         tasks = TaskCard.objects(task_due_date__gte=first_day_of_this_week, task_due_date__lte=last_day_of_this_week)

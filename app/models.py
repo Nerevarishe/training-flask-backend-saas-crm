@@ -4,21 +4,20 @@ from mongoengine import fields as fl, DENY
 
 
 class BaseDocument(Document):
-    
     meta = {
         'abstract': True
     }
-    
-    date_created = fl.DateTimeField(default=datetime.utcnow)
-    date_edited = fl.DateTimeField(default=datetime.utcnow)      
 
-    
+    date_created = fl.DateTimeField(default=datetime.utcnow)
+    date_edited = fl.DateTimeField(default=datetime.utcnow)
+
+
 class User(BaseDocument):
     username = fl.StringField(max_length=30)
     email = fl.EmailField()
     avatar = fl.URLField()
-    
-    
+
+
 class TaskCard(BaseDocument):
     task_due_date = fl.DateField(default=datetime.utcnow)
     task_type = fl.StringField(max_length=10, choices=['Reminder', 'Call', 'Event'])
@@ -27,9 +26,8 @@ class TaskCard(BaseDocument):
     task_body = fl.StringField()
     assigned_by_user = fl.ReferenceField(User, reverse_delete_rule=DENY)
 
-    
+
 class Deal(BaseDocument):
     deal_date = fl.DateField()
     amount = fl.IntField()
     client = fl.StringField()
-
