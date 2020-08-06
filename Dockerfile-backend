@@ -1,5 +1,0 @@
-FROM nerevarishe/saas-crm-dashboard-python-dependencies:latest
-WORKDIR /opt/backend
-COPY ./backend ./
-EXPOSE 5000
-CMD gunicorn -w 4 -b 0.0.0.0:5000 training_flask_backend_sass_crm:app
