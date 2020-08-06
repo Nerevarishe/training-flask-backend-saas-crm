@@ -23,7 +23,7 @@ def generate_all_data():
     current_date = datetime.utcnow()
     for _ in range(500):
         task = TaskCard()
-        task.task_due_date = fake.date_between(start_date='-2M', end_date='+1M')
+        task.task_due_date = fake.date_between(start_date='-2M', end_date='+2M')
         task.task_type = choice(['Reminder', 'Call', 'Event'])
         if task.task_due_date < current_date:
             task.task_status = choice(['Completed', 'Ended'])
