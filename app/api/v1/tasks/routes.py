@@ -58,6 +58,12 @@ def get_tasks_stat():
     tasks = filter_period(period)
 
     all_tasks = tasks.count()
+    if all_tasks == 0:
+        return {'tasks_stat': {
+            "active_tasks": 0,
+            "completed_tasks": 0,
+            "ended_tasks": 0
+        }}
     active_tasks = tasks.filter(task_status='Active').count()
     completed_tasks = tasks.filter(task_status='Completed').count()
     ended_tasks = tasks.filter(task_status='Ended').count()

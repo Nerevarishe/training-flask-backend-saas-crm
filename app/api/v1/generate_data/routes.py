@@ -44,7 +44,7 @@ def generate_all_data():
 
     return {
         'msg': 'OK'
-    }
+    }, 201
 
 
 @bp.route('/', methods=['DELETE'])
